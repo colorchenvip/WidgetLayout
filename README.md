@@ -361,8 +361,8 @@ java 额外的接口：
 
 
 
-5.`WrapLayout` xml 属性支持属性如下：java 都有对应的set 和get 方法就不给示例了。当作`LinearLayout`如果要支持`weight`布局，需要设置 `setSupportWeight`为true.
-且如果是单行需要设置lineMinItemCount为一个大于或等于子视图数的值，如果是单列需要设置lineMaxItemCount为1. 才可以应用权重去布局。
+5.`WrapLayout` xml 属性支持属性如下：java 都有对应的set 和get 方法就不给示例了。当作`LinearLayout`如果要支持`weight`布局，需要设置 `setSupportWeight`为true见`weightSupport`.
+且垂直布局需设置lineMaxItemCount为1，水平布局时lineMinItemCount可不设，也可设置为一个大于或等于子视图数的值或设置小于1 的值. 只有这样才可以应用权重去做垂直或是水平的布局。
 
 ``` xml
   <!--每行内容水平居中-->

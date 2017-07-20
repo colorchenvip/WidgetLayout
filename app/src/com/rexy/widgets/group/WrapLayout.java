@@ -115,7 +115,7 @@ public class WrapLayout extends PressViewGroup {
                     needLine = true;
                 } else {
                     if (attemptWidth > mContentMaxWidthAccess) {
-                        needLine = true;
+                        needLine = !(mSupportWeight && mEachLineMinItemCount <= 0 && mEachLineMaxItemCount != 1);
                     }
                 }
             }
@@ -148,7 +148,7 @@ public class WrapLayout extends PressViewGroup {
         int middleMarginHorizontal = mDividerMargin.getContentMarginHorizontal();
         int middleMarginVertical = mDividerMargin.getContentMarginVertical();
 
-        final boolean supportWeight = mSupportWeight && ((mEachLineMaxItemCount == 1) || (mEachLineMinItemCount >= childCount));
+        final boolean supportWeight = mSupportWeight && ((mEachLineMaxItemCount == 1) || (mEachLineMinItemCount >= childCount || mEachLineMinItemCount <= 0));
         mWeightView.clear();
         for (int childIndex = 0; childIndex < childCount; childIndex++) {
             final View child = getChildAt(childIndex);
