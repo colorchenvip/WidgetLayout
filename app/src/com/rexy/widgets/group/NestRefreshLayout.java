@@ -956,7 +956,7 @@ public class NestRefreshLayout<INDICATOR extends View & NestRefreshLayout.OnRefr
         if (formatDistance == 0 && mRefreshState == OnRefreshListener.STATE_IDLE) {
             return;
         }
-        boolean willOptHeader = formatDistance == 0 ? (mScrollState % 2 == 1) : formatDistance > 0;
+        boolean willOptHeader = formatDistance == 0 ? (mRefreshState % 2 == 1) : formatDistance > 0;
         if (willOptHeader != isOptHeader) {
             if (interceptRefreshDirectionChanged(willOptHeader, moveDistance, cancelUp)) {
                 if (cancelUp) {
@@ -1018,7 +1018,7 @@ public class NestRefreshLayout<INDICATOR extends View & NestRefreshLayout.OnRefr
         }
         if (mLastRefreshDistance != finalPosition) {
             updateRefreshView(finalPosition, isOptHeader);
-            notify(mScrollState, mScrollState, finalPosition);
+            notify(mRefreshState, mRefreshState, finalPosition);
         }
     }
 
