@@ -42,13 +42,14 @@ import com.rexy.widgetlayout.R;
  * <attr name="lineCenterHorizontal" format="boolean"/>
  * <!--每行内容垂直居中-->
  * <attr name="lineCenterVertical" format="boolean"/>
- *
+ * <p>
  * <!--每一行最少的Item 个数-->
  * <attr name="lineMinItemCount" format="integer"/>
  * <!--每一行最多的Item 个数-->
  * <attr name="lineMaxItemCount" format="integer"/>
  * <!-- 支持weight 属性，前提条件是单行或单列的情况-->
  * <attr name="weightSupport" format="boolean" />
+ *
  * @author: rexy
  * @date: 2015-11-27 17:43
  */
@@ -136,26 +137,26 @@ public class WrapLayout extends PressViewGroup {
         mLineEndIndex.clear();
         mLineItemCount.clear();
         mLineWidth.clear();
-        mContentMaxWidthAccess=maxSelfWidthNoPadding;
+        mContentMaxWidthAccess = maxSelfWidthNoPadding;
         mWeightSum = 0;
         int currentLineIndex = 0;
         int currentLineMaxWidth = 0;
         int currentLineMaxHeight = 0;
         int currentLineItemCount = 0;
 
-        int contentWidth = 0, contentHeight = 0, childState = 0, lastMeasureIndex=0;
+        int contentWidth = 0, contentHeight = 0, childState = 0, lastMeasureIndex = 0;
         int middleMarginHorizontal = mDividerMargin.getContentMarginHorizontal();
         int middleMarginVertical = mDividerMargin.getContentMarginVertical();
 
         final boolean supportWeight = mSupportWeight && ((mEachLineMaxItemCount == 1) || (mEachLineMinItemCount >= childCount));
         mWeightView.clear();
-        for (int childIndex=0; childIndex < childCount; childIndex++) {
+        for (int childIndex = 0; childIndex < childCount; childIndex++) {
             final View child = getChildAt(childIndex);
             if (skipChild(child)) continue;
             WrapLayout.LayoutParams params = (WrapLayout.LayoutParams) child.getLayoutParams();
             if (params.weight > 0) {
-                if (!(params.width == 0 || params.height == 0) || !mSupportWeight) {
-                    throw new IllegalArgumentException("use weight feature,should setSupportWeight true and layout_width or Layout_height should be 0");
+                if (!mSupportWeight) {
+                    throw new IllegalArgumentException("use weight feature,should setSupportWeight true ");
                 }
                 mWeightSum += params.weight;
                 if (supportWeight) {
@@ -169,7 +170,7 @@ public class WrapLayout extends PressViewGroup {
             int childWidthWithMargin = child.getMeasuredWidth() + childMarginHorizontal;
             int childHeightWithMargin = child.getMeasuredHeight() + childMarginVertical;
             childState |= child.getMeasuredState();
-            lastMeasureIndex=childIndex;
+            lastMeasureIndex = childIndex;
             if (ifNeedNewLine(child, childWidthWithMargin + currentLineMaxWidth + middleMarginHorizontal, currentLineItemCount)) {
                 if (ignoreBeyondWidth || currentLineMaxWidth <= mContentMaxWidthAccess) {
                     contentWidth = Math.max(contentWidth, currentLineMaxWidth);
@@ -231,7 +232,7 @@ public class WrapLayout extends PressViewGroup {
             }
             mWeightView.clear();
         }
-        setContentSize(contentWidth+contentMarginHorizontal, contentHeight+contentMarginVertical);
+        setContentSize(contentWidth + contentMarginHorizontal, contentHeight + contentMarginVertical);
         setMeasureState(childState);
     }
 
@@ -240,7 +241,7 @@ public class WrapLayout extends PressViewGroup {
         boolean needAdjustMargin = mLineItemCount.size() == 0;
         int size = mWeightView.size();
         int itemMargin = vertical ? mDividerMargin.getContentMarginVertical() : mDividerMargin.getContentMarginHorizontal();
-        float sizeAccess = MeasureSpec.getSize(vertical ? heightMeasureSpec : widthMeasureSpec)-(needAdjustMargin?size-1:size)*itemMargin;
+        float sizeAccess = MeasureSpec.getSize(vertical ? heightMeasureSpec : widthMeasureSpec) - (needAdjustMargin ? size - 1 : size) * itemMargin;
         for (int i = 0; i < size; i++) {
             int childIndex = mWeightView.keyAt(i);
             View child = mWeightView.get(childIndex);
@@ -283,13 +284,13 @@ public class WrapLayout extends PressViewGroup {
                 }
             }
             betterLineIndex += 1;
-            int goodLine = betterLineIndex<mLineEndIndex.size() ? mLineEndIndex.keyAt(betterLineIndex) : betterLineIndex;
+            int goodLine = betterLineIndex < mLineEndIndex.size() ? mLineEndIndex.keyAt(betterLineIndex) : betterLineIndex;
             for (int lineIndex = lineSize - 1; lineIndex >= betterLineIndex; lineIndex--) {
                 int line = mLineEndIndex.keyAt(lineIndex);
                 mLineEndIndex.put(line + 1, mLineEndIndex.get(line));
-                mLineItemCount.put(line+1,mLineItemCount.get(line));
-                mLineWidth.put(line+1,mLineWidth.get(line));
-                mLineHeight.put(line+1,mLineHeight.get(line));
+                mLineItemCount.put(line + 1, mLineItemCount.get(line));
+                mLineWidth.put(line + 1, mLineWidth.get(line));
+                mLineHeight.put(line + 1, mLineHeight.get(line));
             }
             mLineEndIndex.put(goodLine, childIndex);
             mLineItemCount.put(goodLine, 1);
@@ -312,17 +313,17 @@ public class WrapLayout extends PressViewGroup {
         final boolean lineHorizontal = mEachLineCenterHorizontal || ((gravity & Gravity.HORIZONTAL_GRAVITY_MASK) == Gravity.CENTER_HORIZONTAL && lineCount == 1);
         final int middleMarginHorizontal = mDividerMargin.getContentMarginHorizontal();
         final int middleMarginVertical = mDividerMargin.getContentMarginVertical();
-        final int contentMarginLeft=mDividerMargin.getContentMarginLeft();
-        final int contentMarginTop=mDividerMargin.getContentMarginTop();
-        final int contentWidthNoMargin=getContentWidth()-mDividerMargin.getContentMarginLeft()-mDividerMargin.getContentMarginRight();
-        int lineEndIndex, lineMaxHeight, childIndex = 0, lineTop = contentTop+contentMarginTop;
+        final int contentMarginLeft = mDividerMargin.getContentMarginLeft();
+        final int contentMarginTop = mDividerMargin.getContentMarginTop();
+        final int contentWidthNoMargin = getContentWidth() - mDividerMargin.getContentMarginLeft() - mDividerMargin.getContentMarginRight();
+        int lineEndIndex, lineMaxHeight, childIndex = 0, lineTop = contentTop + contentMarginTop;
         int childLeft, childTop, childRight, childBottom;
         for (int lineIndex = 0; lineIndex < lineCount; lineIndex++) {
             lineEndIndex = mLineEndIndex.get(lineIndex);
             lineMaxHeight = mLineHeight.get(lineIndex);
-            childLeft = contentLeft+contentMarginLeft;
+            childLeft = contentLeft + contentMarginLeft;
             if (lineHorizontal) {
-                childLeft += (contentWidthNoMargin- mLineWidth.get(lineIndex)) / 2;
+                childLeft += (contentWidthNoMargin - mLineWidth.get(lineIndex)) / 2;
             }
             for (; childIndex <= lineEndIndex; childIndex++) {
                 final View child = getChildAt(childIndex);
@@ -356,13 +357,13 @@ public class WrapLayout extends PressViewGroup {
             final int lineCount = mLineEndIndex.size();
             final int middleMarginHorizontal = mDividerMargin.getContentMarginHorizontal();
             final int middleMarginVertical = mDividerMargin.getContentMarginVertical();
-            final int contentMarginTop=mDividerMargin.getContentMarginTop();
+            final int contentMarginTop = mDividerMargin.getContentMarginTop();
 
             int parentLeft = getPaddingLeft();
             int parentRight = getWidth() - getPaddingRight();
 
             int lineIndex = 0, childIndex = 0;
-            int lineTop = getContentTop()+contentMarginTop, lineBottom;
+            int lineTop = getContentTop() + contentMarginTop, lineBottom;
             for (; lineIndex < lineCount; lineIndex++) {
                 int lineEndIndex = mLineEndIndex.get(lineIndex);
                 lineBottom = lineTop + mLineHeight.get(lineIndex);
@@ -404,7 +405,7 @@ public class WrapLayout extends PressViewGroup {
     }
 
     public boolean isSupportWeight() {
-       return mSupportWeight;
+        return mSupportWeight;
     }
 
     public void setSupportWeight(boolean supportWeight) {

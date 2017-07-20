@@ -6,7 +6,7 @@
 3. `NestFloatLayout` 支持列表的嵌套滑动和指定子 `View` 悬停顶部，类似`NestScrollView` 。
 4. `PageScrollView` 可水平垂直方向布局和滑动吸顶等，无需嵌套，支持`ScrollView`和`ViewPager`的交互和接口。
 5. `PageScrollTab` 在`PageScrollView`上扩展支持`Tab`场景交互和各种UI定制。
-6. `WrapLayout` 支持水平布局，并自适应换行，可限定每行最少和最多Item数，行内容可水平和垂直居中。
+6. `WrapLayout` 支持水平布局，并自适应换行，单行或列时支持`weight`属性，可限定每行最少和最多Item数，行内容可水平和垂直居中。
 7. `LabelLayout` 继承自 `WrapLayout`,以`ItemProvider` 方式提供内容，有简单的回收复用机制，有Item点击监听。
 8. `HierarchyLayout` 一个展示 `View`树层级关系和工具容器，可画出结束依赖图和3D层级图，计算出平均层级和最近一次`measure,layout,draw`的时间。
 
@@ -28,7 +28,7 @@
    + **容器自身或对直接子`View`的最大宽高限定**，容器内容和直接子`View`的`gravity`灵活支持。
    + 容器需要**描边**或子`View`间画**分割线**的，或有各种间距要求，或按下自带激变层效果可使用继承于`PressViewGroup`的容器，如`WrapLayout,LabelLayout,ColumnLayout`。
    + 常见的**表格**布局或**动态等分**布局可用`ColumnLayout`，支持每列的`Align`方式（左中右上下）和全铺满。
-   + 标签布局或需自适应换行可选用`WrapLayout`和`LabelLayout`，可设置行最少最多的`View` 个数和行居中，
+   + 水平或垂直布局，标签布局，或需自适应换行可选用`WrapLayout`和`LabelLayout`，可设置行最少最多的`View` 个数和行居中，
    + 列表需要**嵌套滑动**和悬停吸顶可用`NestFloatLayout`，类似NestScrollView 。
    + `PageScrollView` 可取代`ScrollView&HorizontalScrollView` 少嵌套，可设置任意子`View`滑动悬停在开始和结束位置，可不限定子`View`大小像 `ViewPager` 一样选中居中和滑动的交互。
    + `WrapLayout,ColumnLayout`是完全可替代支持不同方向的`LinearLayout`并能提供更多的布局约束，和**背景，描边，分割等额外装饰**。
@@ -161,7 +161,7 @@ Demo 入口 和 `NestFloatLayout`的演示效果。
 
 ### 具体容器组件的属性和使用介绍
 
-1.`ColumnLayout` xml 属性支持属性如下：java 都有对应的set和get方法就不给示例了。
+1.`ColumnLayout` xml 属性支持属性如下：java 都有对应的set和get方法就不给示例了，内容分割线间距见以上通用属性。
 
 ``` xml
   <!--列个数-->
@@ -181,15 +181,6 @@ Demo 入口 和 `NestFloatLayout`的演示效果。
   <attr name="columnMaxWidth" format="dimension" />
   <attr name="columnMinHeight" format="dimension" />
   <attr name="columnMaxHeight" format="dimension" />
-
-  <!-- 列分割线颜色-->
-  <attr name="columnDividerColor" format="color"/>
-  <!--列分割线宽-->
-  <attr name="columnDividerWidth" format="dimension"/>
-  <!--列分割线开始 和结束padding-->
-  <attr name="columnDividerPadding" format="dimension"/>
-  <attr name="columnDividerPaddingStart" format="dimension"/>
-  <attr name="columnDividerPaddingEnd" format="dimension"/>
 ```
 
 2.`NestRefreshLayout` 在xml 中可像`ScrollView`一样用，只支持一个内容。可动态设置头部和尾部。
@@ -370,7 +361,8 @@ java 额外的接口：
 
 
 
-5.`WrapLayout` xml 属性支持属性如下：java 都有对应的set 和get 方法就不给示例了。
+5.`WrapLayout` xml 属性支持属性如下：java 都有对应的set 和get 方法就不给示例了。当作`LinearLayout`如果要支持`weight`布局，需要设置 `setSupportWeight`为true.
+且如果是单行需要设置lineMinItemCount为一个大于或等于子视图数的值，如果是单列需要设置lineMaxItemCount为1. 才可以应用权重去布局。
 
 ``` xml
   <!--每行内容水平居中-->
@@ -382,6 +374,9 @@ java 额外的接口：
   <attr name="lineMinItemCount" format="integer"/>
   <!--每一行最多的Item 个数-->
   <attr name="lineMaxItemCount" format="integer"/>
+  
+  <!-- 支持weight 属性，前提条件是单行或单列的情况-->
+  <attr name="weightSupport" format="boolean" />
 ```
 
 6.`LabelLayout` 继承`WrapLayout`有其所有功能接口。
