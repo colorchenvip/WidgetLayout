@@ -209,25 +209,31 @@ public class WrapLayout extends PressViewGroup {
             mLineItemCount.put(currentLineIndex, currentLineItemCount);
             mLineEndIndex.put(currentLineIndex, lastMeasureIndex);
         }
-        if (supportWeight && mWeightView.size() > 0) {
+        int weightListSize = supportWeight ? mWeightView.size() : 0;
+        if (weightListSize > 0) {
+            boolean needAdjustMargin = mLineItemCount.size() == 0;
             boolean vertical = mEachLineMaxItemCount == 1;
-            int remain, widthMeasureSpec = widthMeasureSpecNoPadding, heightMeasureSpec = heightMeasureSpecNoPadding;
+            int remain, adjustMargin;
+            int widthMeasureSpec = widthMeasureSpecNoPadding, heightMeasureSpec = heightMeasureSpecNoPadding;
             if (vertical) {
-                remain = maxSelfHeightNoPadding - contentHeight - contentMarginVertical;
+                adjustMargin = (needAdjustMargin ? weightListSize - 1 : weightListSize) * middleMarginVertical;
+                remain = maxSelfHeightNoPadding - contentHeight - contentMarginVertical - adjustMargin;
                 heightMeasureSpec = MeasureSpec.makeMeasureSpec(remain, MeasureSpec.getMode(heightMeasureSpec));
             } else {
-                remain = maxSelfWidthNoPadding - contentWidth - contentMarginHorizontal;
+                adjustMargin = (needAdjustMargin ? weightListSize - 1 : weightListSize) * middleMarginHorizontal;
+                remain = maxSelfWidthNoPadding - contentWidth - contentMarginHorizontal - adjustMargin;
                 widthMeasureSpec = MeasureSpec.makeMeasureSpec(remain, MeasureSpec.getMode(widthMeasureSpec));
             }
             if (remain > mWeightView.size()) {
                 int[] r = new int[2];
                 adjustMeasureWithWeight(widthMeasureSpec, heightMeasureSpec, r, vertical);
                 if (vertical) {
-                    contentHeight += r[1];
+                    contentHeight += (r[1] + adjustMargin);
                     contentWidth = Math.max(contentWidth, r[0]);
                 } else {
-                    contentWidth += r[0];
+                    contentWidth += (r[0] + adjustMargin);
                     contentHeight = Math.max(contentHeight, r[1]);
+                    mLineWidth.put(0,mLineWidth.get(0)+adjustMargin);
                 }
             }
             mWeightView.clear();
@@ -238,10 +244,8 @@ public class WrapLayout extends PressViewGroup {
 
 
     private void adjustMeasureWithWeight(int widthMeasureSpec, int heightMeasureSpec, int[] r, boolean vertical) {
-        boolean needAdjustMargin = mLineItemCount.size() == 0;
         int size = mWeightView.size();
-        int itemMargin = vertical ? mDividerMargin.getContentMarginVertical() : mDividerMargin.getContentMarginHorizontal();
-        float sizeAccess = MeasureSpec.getSize(vertical ? heightMeasureSpec : widthMeasureSpec) - (needAdjustMargin ? size - 1 : size) * itemMargin;
+        float sizeAccess = MeasureSpec.getSize(vertical ? heightMeasureSpec : widthMeasureSpec);
         for (int i = 0; i < size; i++) {
             int childIndex = mWeightView.keyAt(i);
             View child = mWeightView.get(childIndex);
@@ -250,23 +254,14 @@ public class WrapLayout extends PressViewGroup {
             int marginVertical = params.getMarginVertical();
             int childWidthMeasureSpec, childHeightMeasureSpec;
             if (vertical) {
-                r[1] += itemMargin;
                 childWidthMeasureSpec = getChildMeasureSpec(widthMeasureSpec, marginHorizontal, params.width);
                 childHeightMeasureSpec = MeasureSpec.makeMeasureSpec((int) (((sizeAccess * params.weight) / mWeightSum) - marginVertical), MeasureSpec.EXACTLY);
             } else {
-                r[0] += itemMargin;
                 childHeightMeasureSpec = getChildMeasureSpec(heightMeasureSpec, marginVertical, params.height);
                 childWidthMeasureSpec = MeasureSpec.makeMeasureSpec((int) (((sizeAccess * params.weight) / mWeightSum) - marginHorizontal), MeasureSpec.EXACTLY);
             }
             params.measure(child, childWidthMeasureSpec, childHeightMeasureSpec);
             insertMeasureInfo(child.getMeasuredWidth() + marginHorizontal, child.getMeasuredHeight() + marginVertical, childIndex, r, vertical);
-        }
-        if (needAdjustMargin) {
-            if (vertical) {
-                r[1] -= itemMargin;
-            } else {
-                r[0] -= itemMargin;
-            }
         }
     }
 
