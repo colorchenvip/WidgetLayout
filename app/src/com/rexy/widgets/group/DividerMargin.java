@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.util.AttributeSet;
 
 import com.rexy.widgetlayout.R;
@@ -404,6 +405,7 @@ public class DividerMargin {
         return mDividerWidthHorizontal;
     }
 
+    //todo remove.
     public int getContentMarginLeft(){
         return mContentMarginLeft;
     }
@@ -488,6 +490,13 @@ public class DividerMargin {
         return result;
     }
 
+    public void applyContentMargin(Rect outRect){
+        outRect.left+=mContentMarginLeft;
+        outRect.top+=mContentMarginTop;
+        outRect.right+=mContentMarginRight;
+        outRect.bottom+=mContentMarginBottom;
+    }
+
     public void drawBorder(Canvas canvas, int viewWidth, int viewHeight) {
         boolean drawLeft = mBorderLeftColor != 0 && mBorderLeftWidth > 0;
         boolean drawTop = mBorderTopColor != 0 && mBorderTopWidth > 0;
@@ -550,60 +559,58 @@ public class DividerMargin {
         }
     }
 
-    public static DividerMargin from(Context context, AttributeSet attrs) {
+    public static DividerMargin from(Context context, TypedArray attr) {
         DividerMargin dm = new DividerMargin(context.getResources().getDisplayMetrics().density);
-        TypedArray attr = attrs == null ? null : context.obtainStyledAttributes(attrs, R.styleable.DividerMargin);
         if (attr != null) {
-            dm.mDividerColorHorizontal = attr.getColor(R.styleable.DividerMargin_dividerColorHorizontal, dm.mDividerColorHorizontal);
-            dm.mDividerWidthHorizontal = attr.getDimensionPixelSize(R.styleable.DividerMargin_dividerWidthHorizontal, dm.mDividerWidthHorizontal);
-            boolean hasDividerPaddingHorizontal = attr.hasValue(R.styleable.DividerMargin_dividerPaddingHorizontal);
-            int dividerPaddingHorizontal = hasDividerPaddingHorizontal ? attr.getDimensionPixelSize(R.styleable.DividerMargin_dividerPaddingHorizontal, 0) : 0;
-            dm.mDividerPaddingHorizontalStart = attr.getDimensionPixelSize(R.styleable.DividerMargin_dividerPaddingHorizontalStart, hasDividerPaddingHorizontal ? dividerPaddingHorizontal : dm.mDividerPaddingHorizontalStart);
-            dm.mDividerPaddingHorizontalEnd = attr.getDimensionPixelSize(R.styleable.DividerMargin_dividerPaddingHorizontalEnd, hasDividerPaddingHorizontal ? dividerPaddingHorizontal : dm.mDividerPaddingHorizontalEnd);
+            dm.mDividerColorHorizontal = attr.getColor(R.styleable.BaseViewGroup_dividerColorHorizontal, dm.mDividerColorHorizontal);
+            dm.mDividerWidthHorizontal = attr.getDimensionPixelSize(R.styleable.BaseViewGroup_dividerWidthHorizontal, dm.mDividerWidthHorizontal);
+            boolean hasDividerPaddingHorizontal = attr.hasValue(R.styleable.BaseViewGroup_dividerPaddingHorizontal);
+            int dividerPaddingHorizontal = hasDividerPaddingHorizontal ? attr.getDimensionPixelSize(R.styleable.BaseViewGroup_dividerPaddingHorizontal, 0) : 0;
+            dm.mDividerPaddingHorizontalStart = attr.getDimensionPixelSize(R.styleable.BaseViewGroup_dividerPaddingHorizontalStart, hasDividerPaddingHorizontal ? dividerPaddingHorizontal : dm.mDividerPaddingHorizontalStart);
+            dm.mDividerPaddingHorizontalEnd = attr.getDimensionPixelSize(R.styleable.BaseViewGroup_dividerPaddingHorizontalEnd, hasDividerPaddingHorizontal ? dividerPaddingHorizontal : dm.mDividerPaddingHorizontalEnd);
 
-            dm.mDividerColorVertical = attr.getColor(R.styleable.DividerMargin_dividerColorVertical, dm.mDividerColorVertical);
-            dm.mDividerWidthVertical = attr.getDimensionPixelSize(R.styleable.DividerMargin_dividerWidthVertical, dm.mDividerWidthVertical);
-            boolean hasDividerPaddingVertical = attr.hasValue(R.styleable.DividerMargin_dividerPaddingVertical);
-            int dividerPaddingVertical = hasDividerPaddingVertical ? attr.getDimensionPixelSize(R.styleable.DividerMargin_dividerPaddingVertical, 0) : 0;
-            dm.mDividerPaddingVerticalStart = attr.getDimensionPixelSize(R.styleable.DividerMargin_dividerPaddingVerticalStart, hasDividerPaddingVertical ? dividerPaddingVertical : dm.mDividerPaddingVerticalStart);
-            dm.mDividerPaddingVerticalEnd = attr.getDimensionPixelSize(R.styleable.DividerMargin_dividerPaddingVerticalEnd, hasDividerPaddingVertical ? dividerPaddingVertical : dm.mDividerPaddingVerticalEnd);
+            dm.mDividerColorVertical = attr.getColor(R.styleable.BaseViewGroup_dividerColorVertical, dm.mDividerColorVertical);
+            dm.mDividerWidthVertical = attr.getDimensionPixelSize(R.styleable.BaseViewGroup_dividerWidthVertical, dm.mDividerWidthVertical);
+            boolean hasDividerPaddingVertical = attr.hasValue(R.styleable.BaseViewGroup_dividerPaddingVertical);
+            int dividerPaddingVertical = hasDividerPaddingVertical ? attr.getDimensionPixelSize(R.styleable.BaseViewGroup_dividerPaddingVertical, 0) : 0;
+            dm.mDividerPaddingVerticalStart = attr.getDimensionPixelSize(R.styleable.BaseViewGroup_dividerPaddingVerticalStart, hasDividerPaddingVertical ? dividerPaddingVertical : dm.mDividerPaddingVerticalStart);
+            dm.mDividerPaddingVerticalEnd = attr.getDimensionPixelSize(R.styleable.BaseViewGroup_dividerPaddingVerticalEnd, hasDividerPaddingVertical ? dividerPaddingVertical : dm.mDividerPaddingVerticalEnd);
 
 
-            dm.mBorderLeftColor = attr.getColor(R.styleable.DividerMargin_borderLeftColor, dm.mBorderLeftColor);
-            dm.mBorderLeftWidth = attr.getDimensionPixelSize(R.styleable.DividerMargin_borderLeftWidth, dm.mBorderLeftWidth);
-            boolean hasBorderLeftMargin = attr.hasValue(R.styleable.DividerMargin_borderLeftMargin);
-            int borderLeftMargin = hasBorderLeftMargin ? attr.getDimensionPixelSize(R.styleable.DividerMargin_borderLeftMargin, 0) : 0;
-            dm.mBorderLeftMarginStart = attr.getDimensionPixelSize(R.styleable.DividerMargin_borderLeftMarginStart, hasBorderLeftMargin ? borderLeftMargin : dm.mBorderLeftMarginStart);
-            dm.mBorderLeftMarginEnd = attr.getDimensionPixelSize(R.styleable.DividerMargin_borderLeftMarginEnd, hasBorderLeftMargin ? borderLeftMargin : dm.mBorderLeftMarginEnd);
+            dm.mBorderLeftColor = attr.getColor(R.styleable.BaseViewGroup_borderLeftColor, dm.mBorderLeftColor);
+            dm.mBorderLeftWidth = attr.getDimensionPixelSize(R.styleable.BaseViewGroup_borderLeftWidth, dm.mBorderLeftWidth);
+            boolean hasBorderLeftMargin = attr.hasValue(R.styleable.BaseViewGroup_borderLeftMargin);
+            int borderLeftMargin = hasBorderLeftMargin ? attr.getDimensionPixelSize(R.styleable.BaseViewGroup_borderLeftMargin, 0) : 0;
+            dm.mBorderLeftMarginStart = attr.getDimensionPixelSize(R.styleable.BaseViewGroup_borderLeftMarginStart, hasBorderLeftMargin ? borderLeftMargin : dm.mBorderLeftMarginStart);
+            dm.mBorderLeftMarginEnd = attr.getDimensionPixelSize(R.styleable.BaseViewGroup_borderLeftMarginEnd, hasBorderLeftMargin ? borderLeftMargin : dm.mBorderLeftMarginEnd);
 
-            dm.mBorderTopColor = attr.getColor(R.styleable.DividerMargin_borderTopColor, dm.mBorderTopColor);
-            dm.mBorderTopWidth = attr.getDimensionPixelSize(R.styleable.DividerMargin_borderTopWidth, dm.mBorderTopWidth);
-            boolean hasBorderTopMargin = attr.hasValue(R.styleable.DividerMargin_borderTopMargin);
-            int borderTopMargin = hasBorderTopMargin ? attr.getDimensionPixelSize(R.styleable.DividerMargin_borderTopMargin, 0) : 0;
-            dm.mBorderTopMarginStart = attr.getDimensionPixelSize(R.styleable.DividerMargin_borderTopMarginStart, hasBorderTopMargin ? borderTopMargin : dm.mBorderTopMarginStart);
-            dm.mBorderTopMarginEnd = attr.getDimensionPixelSize(R.styleable.DividerMargin_borderTopMarginEnd, hasBorderTopMargin ? borderTopMargin : dm.mBorderTopMarginEnd);
+            dm.mBorderTopColor = attr.getColor(R.styleable.BaseViewGroup_borderTopColor, dm.mBorderTopColor);
+            dm.mBorderTopWidth = attr.getDimensionPixelSize(R.styleable.BaseViewGroup_borderTopWidth, dm.mBorderTopWidth);
+            boolean hasBorderTopMargin = attr.hasValue(R.styleable.BaseViewGroup_borderTopMargin);
+            int borderTopMargin = hasBorderTopMargin ? attr.getDimensionPixelSize(R.styleable.BaseViewGroup_borderTopMargin, 0) : 0;
+            dm.mBorderTopMarginStart = attr.getDimensionPixelSize(R.styleable.BaseViewGroup_borderTopMarginStart, hasBorderTopMargin ? borderTopMargin : dm.mBorderTopMarginStart);
+            dm.mBorderTopMarginEnd = attr.getDimensionPixelSize(R.styleable.BaseViewGroup_borderTopMarginEnd, hasBorderTopMargin ? borderTopMargin : dm.mBorderTopMarginEnd);
 
-            dm.mBorderRightColor = attr.getColor(R.styleable.DividerMargin_borderRightColor, dm.mBorderRightColor);
-            dm.mBorderRightWidth = attr.getDimensionPixelSize(R.styleable.DividerMargin_borderRightWidth, dm.mBorderRightWidth);
-            boolean hasBorderRightMargin = attr.hasValue(R.styleable.DividerMargin_borderRightMargin);
-            int borderRightMargin = hasBorderRightMargin ? attr.getDimensionPixelSize(R.styleable.DividerMargin_borderRightMargin, 0) : 0;
-            dm.mBorderRightMarginStart = attr.getDimensionPixelSize(R.styleable.DividerMargin_borderRightMarginStart, hasBorderRightMargin ? borderRightMargin : dm.mBorderRightMarginStart);
-            dm.mBorderRightMarginEnd = attr.getDimensionPixelSize(R.styleable.DividerMargin_borderRightMarginEnd, hasBorderRightMargin ? borderRightMargin : dm.mBorderRightMarginEnd);
+            dm.mBorderRightColor = attr.getColor(R.styleable.BaseViewGroup_borderRightColor, dm.mBorderRightColor);
+            dm.mBorderRightWidth = attr.getDimensionPixelSize(R.styleable.BaseViewGroup_borderRightWidth, dm.mBorderRightWidth);
+            boolean hasBorderRightMargin = attr.hasValue(R.styleable.BaseViewGroup_borderRightMargin);
+            int borderRightMargin = hasBorderRightMargin ? attr.getDimensionPixelSize(R.styleable.BaseViewGroup_borderRightMargin, 0) : 0;
+            dm.mBorderRightMarginStart = attr.getDimensionPixelSize(R.styleable.BaseViewGroup_borderRightMarginStart, hasBorderRightMargin ? borderRightMargin : dm.mBorderRightMarginStart);
+            dm.mBorderRightMarginEnd = attr.getDimensionPixelSize(R.styleable.BaseViewGroup_borderRightMarginEnd, hasBorderRightMargin ? borderRightMargin : dm.mBorderRightMarginEnd);
 
-            dm.mBorderBottomColor = attr.getColor(R.styleable.DividerMargin_borderBottomColor, dm.mBorderBottomColor);
-            dm.mBorderBottomWidth = attr.getDimensionPixelSize(R.styleable.DividerMargin_borderBottomWidth, dm.mBorderBottomWidth);
-            boolean hasBorderBottomMargin = attr.hasValue(R.styleable.DividerMargin_borderBottomMargin);
-            int borderBottomMargin = hasBorderBottomMargin ? attr.getDimensionPixelSize(R.styleable.DividerMargin_borderBottomMargin, 0) : 0;
-            dm.mBorderBottomMarginStart = attr.getDimensionPixelSize(R.styleable.DividerMargin_borderBottomMarginStart, hasBorderBottomMargin ? borderBottomMargin : dm.mBorderBottomMarginStart);
-            dm.mBorderBottomMarginEnd = attr.getDimensionPixelSize(R.styleable.DividerMargin_borderBottomMarginEnd, hasBorderBottomMargin ? borderBottomMargin : dm.mBorderBottomMarginEnd);
+            dm.mBorderBottomColor = attr.getColor(R.styleable.BaseViewGroup_borderBottomColor, dm.mBorderBottomColor);
+            dm.mBorderBottomWidth = attr.getDimensionPixelSize(R.styleable.BaseViewGroup_borderBottomWidth, dm.mBorderBottomWidth);
+            boolean hasBorderBottomMargin = attr.hasValue(R.styleable.BaseViewGroup_borderBottomMargin);
+            int borderBottomMargin = hasBorderBottomMargin ? attr.getDimensionPixelSize(R.styleable.BaseViewGroup_borderBottomMargin, 0) : 0;
+            dm.mBorderBottomMarginStart = attr.getDimensionPixelSize(R.styleable.BaseViewGroup_borderBottomMarginStart, hasBorderBottomMargin ? borderBottomMargin : dm.mBorderBottomMarginStart);
+            dm.mBorderBottomMarginEnd = attr.getDimensionPixelSize(R.styleable.BaseViewGroup_borderBottomMarginEnd, hasBorderBottomMargin ? borderBottomMargin : dm.mBorderBottomMarginEnd);
 
-            dm.mContentMarginLeft = attr.getDimensionPixelSize(R.styleable.DividerMargin_contentMarginLeft, dm.mContentMarginLeft);
-            dm.mContentMarginTop = attr.getDimensionPixelSize(R.styleable.DividerMargin_contentMarginTop, dm.mContentMarginTop);
-            dm.mContentMarginRight = attr.getDimensionPixelSize(R.styleable.DividerMargin_contentMarginRight, dm.mContentMarginRight);
-            dm.mContentMarginBottom = attr.getDimensionPixelSize(R.styleable.DividerMargin_contentMarginBottom, dm.mContentMarginBottom);
-            dm.mContentMarginHorizontal = attr.getDimensionPixelSize(R.styleable.DividerMargin_contentMarginHorizontal, dm.mContentMarginHorizontal);
-            dm.mContentMarginVertical = attr.getDimensionPixelSize(R.styleable.DividerMargin_contentMarginVertical, dm.mContentMarginVertical);
-            attr.recycle();
+            dm.mContentMarginLeft = attr.getDimensionPixelSize(R.styleable.BaseViewGroup_contentMarginLeft, dm.mContentMarginLeft);
+            dm.mContentMarginTop = attr.getDimensionPixelSize(R.styleable.BaseViewGroup_contentMarginTop, dm.mContentMarginTop);
+            dm.mContentMarginRight = attr.getDimensionPixelSize(R.styleable.BaseViewGroup_contentMarginRight, dm.mContentMarginRight);
+            dm.mContentMarginBottom = attr.getDimensionPixelSize(R.styleable.BaseViewGroup_contentMarginBottom, dm.mContentMarginBottom);
+            dm.mContentMarginHorizontal = attr.getDimensionPixelSize(R.styleable.BaseViewGroup_contentMarginHorizontal, dm.mContentMarginHorizontal);
+            dm.mContentMarginVertical = attr.getDimensionPixelSize(R.styleable.BaseViewGroup_contentMarginVertical, dm.mContentMarginVertical);
         }
         return dm;
     }

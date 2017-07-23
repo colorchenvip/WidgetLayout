@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+
 import com.rexy.widgetlayout.R;
 import com.rexy.widgets.group.PageScrollTab;
 import com.rexy.widgets.group.PageScrollView;
@@ -43,8 +44,6 @@ public class FragmentPageViewPager extends FragmentPageBase {
     }
 
     private void initPageTab(final PageScrollView scrollView, final PageScrollTab tabHost) {
-        scrollView.setLogTag("viewPager");
-        tabHost.setLogTag("scrollTab");
         final View.OnClickListener pageClick1 = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,7 +53,7 @@ public class FragmentPageViewPager extends FragmentPageBase {
                 }
             }
         };
-        int pageItemCount = scrollView.getItemCount();
+        int pageItemCount = scrollView.getItemViewCount();
         for (int i = 0; i < pageItemCount; i++) {
             View child = scrollView.getItemView(i);
             child.setOnClickListener(pageClick1);

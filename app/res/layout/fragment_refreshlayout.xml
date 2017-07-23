@@ -1,11 +1,12 @@
 <com.rexy.widgets.group.NestRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycleView"
+    <com.rexy.widgets.group.ScrollLayout
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/contentBackground"
+        android:orientation="vertical"
         android:paddingLeft="15dp"
         android:paddingRight="15dp" />
 </com.rexy.widgets.group.NestRefreshLayout>

@@ -245,7 +245,7 @@ public class PageScrollTab extends PageScrollView {
         if (mViewPager != null && mViewPager.getAdapter() != null) {
             return mViewPager.getAdapter().getCount();
         }
-        return getItemCount();
+        return getItemViewCount();
     }
 
     public ItemProvider getTabProvider() {
@@ -316,7 +316,7 @@ public class PageScrollTab extends PageScrollView {
                 if (mViewPager != null) {
                     mCurrentPosition = mViewPager.getCurrentItem();
                 }
-                int n = getItemCount();
+                int n = getItemViewCount();
                 if (mCurrentPosition >= 0 && mCurrentPosition < n) {
                     mPreCheckView = getVirtualChildAt(mCurrentPosition, true);
                     if (mPreCheckView instanceof Checkable && mPreCheckView.isEnabled()) {
@@ -745,13 +745,13 @@ public class PageScrollTab extends PageScrollView {
     }
 
     public void smoothScroll(int from, int to, Animation.AnimationListener l) {
-        int childCount = getItemCount();
+        int childCount = getItemViewCount();
         if (from >= 0 && to >= 0 && (from < childCount && to < childCount)) {
             if (getAnimation() != null) {
                 getAnimation().cancel();
                 clearAnimation();
             }
-            boolean horizontal = mOrientation == HORIZONTAL;
+            boolean horizontal = isOrientationHorizontal();
             int scrollFrom = computeScrollOffset(getVirtualChildAt(from, true), 0, false, horizontal);
             int scrollTo = computeScrollOffset(getVirtualChildAt(to, true), 0, false, horizontal);
             if (scrollTo != scrollFrom) {

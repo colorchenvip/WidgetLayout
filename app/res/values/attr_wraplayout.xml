@@ -11,5 +11,6 @@
 
         <!-- 支持weight 属性，前提条件是单行或单列的情况-->
         <attr name="weightSupport" format="boolean" />
+
     </declare-styleable>
 </resources>

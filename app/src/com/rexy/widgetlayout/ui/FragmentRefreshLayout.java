@@ -1,23 +1,19 @@
 package com.rexy.widgetlayout.ui;
 
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rexy.common.BaseFragment;
 import com.rexy.widgetlayout.R;
-import com.rexy.widgetlayout.model.DecorationOffsetLinear;
 import com.rexy.widgetlayout.model.RefreshIndicator;
-import com.rexy.widgetlayout.model.TestRecyclerAdapter;
 import com.rexy.widgets.group.NestRefreshLayout;
+import com.rexy.widgets.group.ScrollLayout;
 import com.rexy.widgets.tools.ViewUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * TODO:功能说明
@@ -27,14 +23,15 @@ import java.util.List;
  */
 public class FragmentRefreshLayout extends BaseFragment implements NestRefreshLayout.OnRefreshListener {
     NestRefreshLayout mRefreshLayout;
-    RecyclerView mRecyclerView;
+    ScrollLayout mScrollView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mRefreshLayout = (NestRefreshLayout) inflater.inflate(R.layout.fragment_refreshlayout, container, false);
-        mRecyclerView = ViewUtils.view(mRefreshLayout, R.id.recycleView);
-        initRecyclerView(mRecyclerView, 15);
+        mScrollView = ViewUtils.view(mRefreshLayout, R.id.scrollView);
+        initScrollView(mScrollView, true);
         initRefreshLayout(mRefreshLayout);
+        mRefreshLayout.setScrollChild(mScrollView);//自定义 View 需要。ScrollView ,AbsListView RecyclerView 不需要。
         return mRefreshLayout;
     }
 
@@ -46,31 +43,45 @@ public class FragmentRefreshLayout extends BaseFragment implements NestRefreshLa
         refreshLayout.setRefreshPushEnable(true);
     }
 
-    private void initRecyclerView(RecyclerView recyclerView, int initCount) {
-        recyclerView.setAdapter(new TestRecyclerAdapter(getActivity(), createData("item", initCount)));
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.addItemDecoration(new DecorationOffsetLinear(false, 20,20,0));
-    }
-
-    private List<String> createData(String prefix, int count) {
-        List<String> list = new ArrayList(count + 1);
-        for (int i = 0; i < count; i++) {
-            list.add(prefix + " " + (i + 1));
+    private void initScrollView(ScrollLayout scrollView, boolean init) {
+        LayoutInflater.from(getActivity()).inflate(R.layout.pagescrollview_scrollview_child, scrollView, true);
+        if (init) {
+            scrollView.setGravity(Gravity.CENTER);
+            scrollView.setBackgroundColor(0xAA000000);
+            scrollView.setVerticalScrollBarEnabled(true);
+            scrollView.setScrollBarStyle(mScrollView.SCROLLBARS_INSIDE_OVERLAY);
         }
-        return list;
+        final View.OnClickListener clickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mScrollView.scrollToItem(mScrollView.indexOfChild(v), -1, true);
+            }
+        };
+        int n = scrollView.getChildCount();
+        for (int i = 0; i < n; i++) {
+            ScrollLayout.LayoutParams lp = (ScrollLayout.LayoutParams) scrollView.getChildAt(i).getLayoutParams();
+            lp.gravity = Gravity.CENTER_HORIZONTAL;
+            lp.topMargin = lp.bottomMargin = 30;
+            lp.leftMargin = lp.rightMargin = 30;
+            scrollView.getChildAt(i).setOnClickListener(clickListener);
+        }
     }
 
     @Override
     public void onRefresh(final NestRefreshLayout parent, final boolean refresh) {
         Toast.makeText(getActivity(), refresh ? "pull refresh" : "push load more", Toast.LENGTH_SHORT).show();
-        mRecyclerView.postDelayed(new Runnable() {
+        mScrollView.postDelayed(new Runnable() {
             @Override
             public void run() {
-                TestRecyclerAdapter adapter = (TestRecyclerAdapter) mRecyclerView.getAdapter();
                 if (refresh) {
-                    adapter.setItem(createData("refresh", 15));
+                    mScrollView.removeAllViews();
+                    initScrollView(mScrollView, false);
                 } else {
-                    adapter.addAll(createData("loadmore", 5));
+                    TextView tv = new TextView(getActivity());
+                    tv.setPadding(20, 20, 20, 20);
+                    tv.setText("load more:" + System.currentTimeMillis());
+                    mScrollView.addView(tv);
+                    mScrollView.scrollToItem(mScrollView.getChildCount()-1,-1,false);
                 }
                 parent.setRefreshComplete();
             }

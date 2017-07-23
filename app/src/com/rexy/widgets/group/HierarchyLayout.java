@@ -21,7 +21,6 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 
-
 import com.rexy.widgets.tools.PaintUtils;
 
 import java.util.Iterator;
@@ -190,6 +189,9 @@ public class HierarchyLayout extends WrapLayout {
         if (!mHierarchyViewEnable) {
             if (action == MotionEvent.ACTION_DOWN) {
                 mPointDown.set(event.getX(), event.getY());
+                if (mPointDown.x >= mOptionRect.left - mSlop && mPointDown.x <= mOptionRect.right + mSlop && mPointDown.y >= mOptionRect.top - mSlop && mPointDown.y <= mOptionRect.bottom + mSlop) {
+                    return true;
+                }
             }
             if (action == MotionEvent.ACTION_UP||action==MotionEvent.ACTION_CANCEL) {
                 handleClickUp(event.getX(), event.getY());
@@ -324,8 +326,8 @@ public class HierarchyLayout extends WrapLayout {
     }
 
     @Override
-    protected void dispatchDrawAfter(Canvas canvas) {
-        super.dispatchDrawAfter(canvas);
+    protected void doAfterDraw(Canvas canvas, Rect inset) {
+        super.doAfterDraw(canvas,inset);
         if (mTree != null && mLeafSize > 0) {
             if ((mHierarchyNodeEnable || mHierarchyViewEnable)) {
                 if (mHierarchyColor != 0) {

@@ -1,6 +1,5 @@
 package com.rexy.widgetlayout.ui;
-import com.rexy.widgets.group.PageScrollView;
-import com.rexy.widgetlayout.R;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,13 +7,16 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.ToggleButton;
 
+import com.rexy.widgetlayout.R;
+import com.rexy.widgets.group.PageScrollView;
+
 /**
  * TODO:功能说明
  *
  * @author: rexy
  * @date: 2017-06-05 15:02
  */
-public class FragmentPageScrollView extends FragmentPageBase{
+public class FragmentPageScrollView extends FragmentPageBase {
 
     ToggleButton mToggleFloatStart;
     ToggleButton mToggleFloatEnd;
@@ -33,7 +35,6 @@ public class FragmentPageScrollView extends FragmentPageBase{
         mToggleFloatEnd = (ToggleButton) root.findViewById(R.id.toggleFloatEnd);
         mToggleFloatStart.setOnCheckedChangeListener(this);
         mToggleFloatEnd.setOnCheckedChangeListener(this);
-        mPageScrollView.setLogTag("scrollView");
         initPageScrollViewItemClick(mPageScrollView);
     }
 
@@ -49,6 +50,7 @@ public class FragmentPageScrollView extends FragmentPageBase{
     }
 
     private void initPageScrollViewItemClick(final PageScrollView scrollView) {
+        scrollView.setLogTag("dev", false);
         final View.OnClickListener pageClick1 = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,14 +60,14 @@ public class FragmentPageScrollView extends FragmentPageBase{
                 }
             }
         };
-        int pageItemCount = scrollView.getItemCount();
+        int pageItemCount = scrollView.getItemViewCount();
         for (int i = 0; i < pageItemCount; i++) {
             scrollView.getItemView(i).setOnClickListener(pageClick1);
         }
     }
 
     private void adjustFloatViewParams(boolean vertical) {
-        int pageItemCount = mPageScrollView.getItemCount();
+        int pageItemCount = mPageScrollView.getItemViewCount();
         if (pageItemCount >= 2) {
             PageScrollView.LayoutParams lp1 = (PageScrollView.LayoutParams) mPageScrollView.getItemView(0).getLayoutParams();
             PageScrollView.LayoutParams lp2 = (PageScrollView.LayoutParams) mPageScrollView.getItemView(pageItemCount - 1).getLayoutParams();
@@ -84,7 +86,7 @@ public class FragmentPageScrollView extends FragmentPageBase{
     private void adjustFloatIndex(boolean header, boolean needAdded) {
         int floatIndex = -1;
         if (needAdded) {
-            floatIndex = header ? 0 : mPageScrollView.getItemCount() - 1;
+            floatIndex = header ? 0 : mPageScrollView.getItemViewCount() - 1;
         }
         if (header) {
             mPageScrollView.setFloatViewStartIndex(floatIndex);

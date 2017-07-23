@@ -33,7 +33,7 @@ public class FragmentWrapLabelLayout extends FragmentViewPicker {
         mLabelLayout = ViewUtils.view(root, R.id.labelLayout);
         mToggleOpt = ViewUtils.view(root, R.id.toggleOptView);
         initViewProperties(mLabelLayout, mWrapLayout);
-        buildRandomView(5,true);
+        buildRandomView(7,true);
         mToggleOpt.setChecked(!mToggleOpt.isChecked());
         return root;
     }

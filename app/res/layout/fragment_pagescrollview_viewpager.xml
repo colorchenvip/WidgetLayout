@@ -78,10 +78,10 @@
         android:orientation="horizontal"
         app:viewPagerStyle="true"
         app:childCenter="true"
-        app:middleMargin="10dp"
+        app:contentMarginHorizontal="10dp"
+        app:contentMarginVertical="10dp"
         app:floatViewEndIndex="-1"
         app:floatViewStartIndex="-1"
-        app:overFlingDistance="0dp"
         app:sizeFixedPercent="0">
         <include layout="@layout/pagescrollview_viewpager_child" />
     </com.rexy.widgets.group.PageScrollView>

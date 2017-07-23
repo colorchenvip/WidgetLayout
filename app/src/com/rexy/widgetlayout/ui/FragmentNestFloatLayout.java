@@ -29,7 +29,7 @@ public class FragmentNestFloatLayout extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_nestfloatlayout, container, false);
         mListView = ViewUtils.view(root, R.id.listView);
-        initRecyclerView(mListView, 25);
+        initRecyclerView(mListView, 50);
         return root;
     }
 

@@ -1,6 +1,5 @@
 package com.rexy.widgetlayout.ui;
 
-import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
@@ -53,7 +52,7 @@ public class ActivityMain extends BaseActivity implements View.OnClickListener {
             ActivityCommon.launch(this, FragmentRefreshLayout.class);
         }
         if (R.id.buttonHierarchy == id) {
-            ActivityCommon.launch(this,FragmentHierarchyLayout.class);
+            ActivityCommon.launch(this, FragmentHierarchyLayout.class);
         }
     }
 }

@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center_horizontal"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:floatViewStartIndex="0">
@@ -35,6 +35,7 @@
         app:foregroundColor="#000"
         app:foregroundDuration="120"
         app:foregroundRadius="5dp"  >
+
         <com.rexy.widgets.view.FadeTextButton
             android:id="@+id/buttonRefresh"
             android:layout_width="wrap_content"
