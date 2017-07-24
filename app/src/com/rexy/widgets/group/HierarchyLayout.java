@@ -66,7 +66,7 @@ public class HierarchyLayout extends WrapLayout {
     private final SparseArray<String> mIdNameArr = new SparseArray<>();
 
     private float mViewTextOffset = 1;
-    private boolean mHierarchyViewEnable = false;
+    private boolean mHierarchyViewEnable = true;
     private boolean mHierarchyNodeEnable = true;
     private boolean mHierarchySummaryEnable = true;
     private boolean mDrawViewEnable = true;

@@ -849,7 +849,7 @@ public abstract class BaseViewGroup extends ViewGroup {
 
     protected int getContentTop() {
         int paddingTop = getPaddingTop();
-        int result = getContentStartH(paddingTop, getHeight() - getPaddingBottom(), getContentHeight(), mGravity);
+        int result = getContentStartV(paddingTop, getHeight() - getPaddingBottom(), getContentHeight(), mGravity);
         if (result < paddingTop && isTouchScrollVerticalEnable(false)) {
             result = paddingTop;
         }

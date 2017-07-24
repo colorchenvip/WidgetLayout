@@ -10,7 +10,6 @@ import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.rexy.widgetlayout.R;
 
@@ -438,15 +437,15 @@ public class PageScrollView extends ScrollLayout {
             if (isChildFillParent && itemCount > 0) {
                 int adjustTotal;
                 if (horizontal) {
-                    adjustTotal = measuredHeight - (contentHeight + getPaddingTop() + getPaddingBottom());
-                } else {
                     adjustTotal = measuredWidth - (contentWidth + getPaddingLeft() + getPaddingRight());
+                } else {
+                    adjustTotal = measuredHeight - (contentHeight + getPaddingTop() + getPaddingBottom());
                 }
                 if (adjustTotal > itemCount && adjustMatchParentMeasure(adjustTotal, horizontal)) {
                     if (horizontal) {
-                        setContentSize(getContentWidth(), getContentHeight() + adjustTotal, getMeasureState());
-                    } else {
                         setContentSize(getContentWidth() + adjustTotal, getContentHeight(), getMeasureState());
+                    } else {
+                        setContentSize(getContentWidth(), getContentHeight() + adjustTotal, getMeasureState());
                     }
                 }
             }
@@ -457,10 +456,10 @@ public class PageScrollView extends ScrollLayout {
     @Override
     protected void doAfterLayout(boolean firstAttachLayout) {
         super.doAfterLayout(firstAttachLayout);
-        if(mNeedResolveFloatOffset&&!firstAttachLayout){
-            mNeedResolveFloatOffset=false;
-            boolean horizontal=isOrientationHorizontal();
-            int scrolled=horizontal?getScrollX():getScrollY();
+        if (mNeedResolveFloatOffset && !firstAttachLayout) {
+            mNeedResolveFloatOffset = false;
+            boolean horizontal = isOrientationHorizontal();
+            int scrolled = horizontal ? getScrollX() : getScrollY();
             if (mPageHeaderView != null || mPageFooterView != null) {
                 updatePositionForHeaderAndFooter(scrolled, horizontal);
             }
@@ -499,9 +498,9 @@ public class PageScrollView extends ScrollLayout {
                 pair = new PointF();
             }
             if (horizontal) {
-                pair.set(i, ((LayoutParams) child.getLayoutParams()).height(child));
-            } else {
                 pair.set(i, ((LayoutParams) child.getLayoutParams()).width(child));
+            } else {
+                pair.set(i, ((LayoutParams) child.getLayoutParams()).height(child));
             }
             mPairList.add(pair);
         }
@@ -549,14 +548,14 @@ public class PageScrollView extends ScrollLayout {
                 PageScrollView.LayoutParams params = (LayoutParams) child.getLayoutParams();
                 int goodSize = (int) point.y;
                 if (horizontal) {
-                    if (goodSize != params.height(child)) {
-                        child.measure(MeasureSpec.makeMeasureSpec(child.getMeasuredWidth(), MeasureSpec.EXACTLY)
-                                , MeasureSpec.makeMeasureSpec(goodSize - params.topMargin() - params.bottomMargin(), MeasureSpec.EXACTLY));
-                    }
-                } else {
                     if (goodSize != params.width(child)) {
                         child.measure(MeasureSpec.makeMeasureSpec(goodSize - params.leftMargin() - params.rightMargin(), MeasureSpec.EXACTLY)
                                 , MeasureSpec.makeMeasureSpec(child.getMeasuredHeight(), MeasureSpec.EXACTLY));
+                    }
+                } else {
+                    if (goodSize != params.height(child)) {
+                        child.measure(MeasureSpec.makeMeasureSpec(child.getMeasuredWidth(), MeasureSpec.EXACTLY)
+                                , MeasureSpec.makeMeasureSpec(goodSize - params.topMargin() - params.bottomMargin(), MeasureSpec.EXACTLY));
                     }
                 }
             }
