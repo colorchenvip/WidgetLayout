@@ -1,25 +1,15 @@
 //所有的arr统一放在aar目录下
-repositories {
-    flatDir {
-        dirs '../libs/aar', '../libs/lib'
-    }
-}
-tasks.whenTaskAdded { task ->
-    if (task.name.contains('AndroidTest') || task.name.contains('UnitTest') || task.name.equals('test')) {
-        task.enabled = false
-    }
-}
-android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
-    defaultConfig {
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
-    }
 
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+
+android {
+    compileSdkVersion ANDROID_BUILD_SDK_VERSION as int
+    buildToolsVersion ANDROID_BUILD_TOOLS_VERSION
+
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion ANDROID_BUILD_SDK_VERSION
+        versionCode Integer.parseInt(VERSION ?: '10')
+        versionName VERSION_NAME
     }
 
     sourceSets {
@@ -86,55 +76,5 @@ android {
         noCompress 'foo', 'bar'
         ignoreAssetsPattern "!.svn:!.git:!.ds_store:!*.scc:.*:<dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"
     }
-    useLibrary 'org.apache.http.legacy'
+    //useLibrary 'org.apache.http.legacy'
 }
-
-//
-//task compileAidl << {
-//    FileTree aidls = fileTree('src/main/aidl').include('**/I*.aidl')
-//    aidls.each {File aidl ->
-//        def shell = ("aidl -p${android.sdk}/platforms/${android.target}/framework.aidl "
-//                + "-I${file('src/main/aidl')} "
-//                + "-o${file('build/source/aidl/debug')} "
-//                + "${aidl.absolutePath}")
-//        def proc = shell.execute()
-//        proc.in.eachLine {line -> println line}
-//        proc.err.eachLine {line -> println 'stderr: ' + line}
-//        proc.waitFor()
-//    }
-//}
-//
-//compileJava.dependsOn(compileAidl)
-
-/***以下是一些基本方法可选****/
-
-//// 代码规范检查
-//checkstyle {
-//    ignoreFailures = true
-//    sourceSets = [sourceSets.main]
-//}
-//
-////findbugs 代码优化bug查找
-//findbugs {
-//    ignoreFailures = true
-//    sourceSets = [sourceSets.main]
-//}
-//
-////代码bug查找检查
-//pmd {
-////    ruleSets = ["basic", "braces", "design"]
-//    ignoreFailures = true
-//    sourceSets = [sourceSets.main]
-//}
-//
-////Jacoco是一个开源的覆盖率工具 for test
-//jacocoTestReport {
-//    reports {
-//        xml.enabled true
-//        html.enabled true
-//        csv.enabled false
-//    }
-//    sourceSets sourceSets.main
-//}
-
-

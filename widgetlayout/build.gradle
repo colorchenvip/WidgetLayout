@@ -1,0 +1,56 @@
+apply plugin: 'com.android.library'
+apply from: "$rootProject.rootDir/base.gradle"
+
+//http://www.2cto.com/kf/201608/532583.html
+ext {
+    bintrayRepo = 'widget'
+    bintrayName = 'widgetlayout'
+
+    publishedGroupId = 'com.rexy.android'
+    libraryName = 'widgetlayout'
+    artifact = 'widgetlayout'
+
+    libraryDescription = 'WidgetLayout is a powerfull  set of customized ViewGroups,it provides a variety of layout container which is easy to use and helpful to reduce the hierarchy relationship'
+
+    siteUrl = 'https://github.com/rexyren/WidgetLayout'
+    gitUrl = 'https://github.com/rexyren/WidgetLayout.git'
+
+    libraryVersion = VERSION_NAME
+
+    developerId = 'XXX'
+    developerName = 'rexyren'
+    developerEmail = 'XXXX@gmail.com'
+
+    licenseName = 'MIT'
+    licenseUrl = 'https://opensource.org/licenses/MIT'
+    allLicenses = ["MIT"]
+}
+
+android {
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    provided(name: 'support-v4-23.4.0', ext: 'aar')
+}
+
+File deployConfig = rootProject.file('IGNORE/config/deploy.gradle')
+if (deployConfig.exists()) {
+    apply from: rootProject.file('IGNORE/config/deploy.gradle')
+}
+
+deployConfig = rootProject.file('IGNORE/config/jcenterInstall.gradle')
+if (deployConfig.exists()) {
+    apply from: rootProject.file('IGNORE/config/jcenterInstall.gradle')
+}
+
+deployConfig = rootProject.file('IGNORE/config/jcenterDeploy.gradle')
+if (deployConfig.exists()) {
+    apply from: rootProject.file('IGNORE/config/jcenterDeploy.gradle')
+}
