@@ -55,3 +55,7 @@ captures/
 !image/*
 image/.DS_Store
 IGNORE/
+
+deploy.gradle
+jcenterDeploy.gradle
+jcenterInstall.gradle
