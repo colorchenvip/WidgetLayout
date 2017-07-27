@@ -1,4 +1,4 @@
-package com.rexy.widgets.drawable;
+package com.rexy.model;
 
 import android.content.Context;
 import android.graphics.Canvas;

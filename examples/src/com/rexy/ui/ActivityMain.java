@@ -5,8 +5,8 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.rexy.common.BaseActivity;
+import com.rexy.model.CardDrawable;
 import com.rexy.widgetlayout.example.R;
-import com.rexy.widgets.drawable.CardDrawable;
 import com.rexy.widgets.tools.ViewUtils;
 
 /**
