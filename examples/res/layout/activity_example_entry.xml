@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.rexy.widgets.group.PageScrollView
+<com.rexy.widgets.layout.PageScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center_horizontal"
@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:floatViewStartIndex="0">
-    <com.rexy.widgets.group.ColumnLayout
+    <com.rexy.widgets.layout.ColumnLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
@@ -36,7 +36,7 @@
         app:foregroundDuration="120"
         app:foregroundRadius="5dp"  >
 
-        <com.rexy.widgets.view.FadeTextButton
+        <com.rexy.example.extend.FadeTextButton
             android:id="@+id/buttonRefresh"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -49,7 +49,7 @@
             android:textColor="@color/optionBackground"
             android:textSize="18sp"
             android:textStyle="bold" />
-        <com.rexy.widgets.view.FadeTextButton
+        <com.rexy.example.extend.FadeTextButton
             android:id="@+id/buttonColumn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -62,7 +62,7 @@
             android:textColor="@color/optionBackground"
             android:textSize="18sp"
             android:textStyle="bold" />
-        <com.rexy.widgets.view.FadeTextButton
+        <com.rexy.example.extend.FadeTextButton
             android:id="@+id/buttonNestFloat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -75,7 +75,7 @@
             android:textColor="@color/optionBackground"
             android:textSize="18sp"
             android:textStyle="bold" />
-        <com.rexy.widgets.view.FadeTextButton
+        <com.rexy.example.extend.FadeTextButton
             android:id="@+id/buttonWrapLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -88,7 +88,7 @@
             android:textColor="@color/optionBackground"
             android:textSize="18sp"
             android:textStyle="bold" />
-        <com.rexy.widgets.view.FadeTextButton
+        <com.rexy.example.extend.FadeTextButton
             android:id="@+id/buttonPageScroll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -102,7 +102,7 @@
             android:textSize="18sp"
             android:textStyle="bold" />
 
-        <com.rexy.widgets.view.FadeTextButton
+        <com.rexy.example.extend.FadeTextButton
             android:id="@+id/buttonHierarchy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -115,7 +115,7 @@
             android:textColor="@color/optionBackground"
             android:textSize="18sp"
             android:textStyle="bold" />
-    </com.rexy.widgets.group.ColumnLayout>
+    </com.rexy.widgets.layout.ColumnLayout>
     <ImageView
         android:id="@+id/imageView"
         android:layout_marginLeft="15dp"
@@ -126,4 +126,4 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:src="@drawable/image" />
-</com.rexy.widgets.group.PageScrollView>
+</com.rexy.widgets.layout.PageScrollView>

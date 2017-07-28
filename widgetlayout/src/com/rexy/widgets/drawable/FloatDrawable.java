@@ -10,12 +10,14 @@ import android.graphics.drawable.Drawable;
 import android.os.SystemClock;
 
 /**
- * TODO:功能说明
- *
+ * a customized color drawable that support animation to change its alpha.
  * @author: rexy
  * @date: 2017-02-16 14:00
  */
 public class FloatDrawable extends Drawable implements Runnable, Animatable {
+    /**
+     * current color alpha in range [0...255]
+     */
     int mCurrentAlpha = 0;
     long mAnimStartTime = 0;
     boolean mDevDebug = true;
@@ -25,11 +27,27 @@ public class FloatDrawable extends Drawable implements Runnable, Animatable {
     Paint mPaint = new Paint();
 
 
+    /**
+     * min supported alpha
+     */
     private int mMinAlpha = 0;
+    /**
+     * max supported alpha
+     */
     private int mMaxAlpha = 50;
+    /**
+     * animation duration for color alpha change between current and a target alpha
+     */
     private int mDuration = 120;
+    /**
+     * color rgb value  exclude alpha
+     */
     private int mColorWithOutAlpha = 0xFF000000;
+    /**
+     * a hove rectangle shape round corner radius
+     */
     private int mRoundRadius = 0;
+
     private boolean mAnimToVisible = false;
 
     private void print(String msg) {
@@ -47,6 +65,9 @@ public class FloatDrawable extends Drawable implements Runnable, Animatable {
         color(color);
     }
 
+    /**
+     * set current color alpha
+     */
     public FloatDrawable alpha(int alpha) {
         if (mCurrentAlpha != alpha && alpha >= mMinAlpha && alpha <= mMaxAlpha) {
             mCurrentAlpha = alpha;
@@ -59,6 +80,9 @@ public class FloatDrawable extends Drawable implements Runnable, Animatable {
         return FloatDrawable.this;
     }
 
+    /**
+     * set min and max color alpha to change between
+     */
     public FloatDrawable alpha(int minAlpha, int maxAlpha) {
         if (minAlpha < 0 || minAlpha > 255) {
             minAlpha = mMinAlpha;
@@ -81,6 +105,9 @@ public class FloatDrawable extends Drawable implements Runnable, Animatable {
         return FloatDrawable.this;
     }
 
+    /**
+     * set color
+     */
     public FloatDrawable color(int color) {
         int alpha = color >>> 24;
         int colorWithoutAlpha = (color & 0x00FFFFFF) | 0xFF000000;
@@ -100,6 +127,9 @@ public class FloatDrawable extends Drawable implements Runnable, Animatable {
         return FloatDrawable.this;
     }
 
+    /**
+     * set duration for animation
+     */
     public FloatDrawable duration(int duration) {
         if (duration > 0) {
             int deta = mDuration - duration;
@@ -157,6 +187,10 @@ public class FloatDrawable extends Drawable implements Runnable, Animatable {
         return PixelFormat.TRANSLUCENT;
     }
 
+    /**
+     * animate to visible or invisible
+     * @param toVisible target visible state
+     */
     public void start(boolean toVisible) {
         mAnimating = true;
         if (mRunning) {
