@@ -44,13 +44,3 @@ File deployConfig = rootProject.file('IGNORE/config/deploy.gradle')
 if (deployConfig.exists()) {
     apply from: rootProject.file('IGNORE/config/deploy.gradle')
 }
-
-deployConfig = rootProject.file('IGNORE/config/jcenterInstall.gradle')
-if (deployConfig.exists()) {
-    apply from: rootProject.file('IGNORE/config/jcenterInstall.gradle')
-}
-
-deployConfig = rootProject.file('IGNORE/config/jcenterDeploy.gradle')
-if (deployConfig.exists()) {
-    apply from: rootProject.file('IGNORE/config/jcenterDeploy.gradle')
-}
