@@ -67,6 +67,11 @@ Demo 入口 和 `NestFloatLayout`的演示效果。
 
 # 如何使用：XML 属性和 API 简介
 
+###集成需要提供support-v4包，然后再gradle 脚本中添加依赖如下。 
+```
+ compile 'com.rexy.android:widgetlayout:1.0.0'
+```
+
 ### 通用属性说明和介绍
 **注;所有xml 中使用自定义属性的地方，请在根标签中加上`xmlns:app="http://schemas.android.com/apk/res-auto"`**
 
